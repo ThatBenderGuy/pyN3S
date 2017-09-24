@@ -1,6 +1,8 @@
 import argparse
 
-from pyN3S.cpu import CPU
+from cpu import CPU
+from instructions import LDAInstruction
+from rom import ROM
 
 
 def main():
@@ -12,22 +14,16 @@ def main():
                         help='The location to the rom file')
     args = parser.parse_args()
 
-    # TODO: validate rom path is correct
-    print(args.rom_path)
-
     # load rom
     with open(args.rom_path, 'rb') as file:
-        lines = file.read()
+        rom_bytes = file.read()
+
+    rom = ROM(rom_bytes)
 
     # create cpu
     cpu = CPU()
-    # TODO unhardcode
-    num_prg_block = 2
-    instructions = lines[16:16+16384*num_prg_block]
+    cpu.run_rom(rom)
 
-    for instruction in instructions:
-        cpu.process_instruction(instruction)
-        break
 
 if __name__ == '__main__':
     main()
