@@ -1,7 +1,9 @@
 import argparse
 
 from cpu import CPU
-from instructions import LDAInstruction
+from instructions import LdaImmInstruction
+from memory import RAM
+from ppu import PPU
 from rom import ROM
 
 
@@ -20,8 +22,15 @@ def main():
 
     rom = ROM(rom_bytes)
 
+    # create ram
+    ram = RAM()
+
+    # create ppu
+    ppu = PPU()
+
     # create cpu
-    cpu = CPU()
+    cpu = CPU(ram, ppu)
+    cpu.start_up()
     cpu.run_rom(rom)
 
 
